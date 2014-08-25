@@ -1,0 +1,8 @@
+<div>
+
+    <button ng-click="showMyFolders()">getList</button>
+    <div ng-repeat="folder in folders">
+        <a ng-click="openFolder(folder.id)"> {{folder.title}}</a>
+    </div>
+
+</div>
