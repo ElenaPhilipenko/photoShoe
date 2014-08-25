@@ -24,6 +24,7 @@ app.get(api + '/url', drive.getAuthUrl);
 app.get(api + '/auth', drive.getAuth);
 
 app.get(api + '/list', drive.printList);
+app.get(api + '/photos', drive.findPhotos);
 app.get('/oauth2callback', drive.setCode);
 
 http.createServer(app).listen(app.get('port'), function () {

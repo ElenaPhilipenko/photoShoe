@@ -10,7 +10,7 @@ shoeApp.config(['$routeProvider',
                 controller: 'folderController'
             })
             .when('/folder/:folderId', {
-                templateUrl: 'pages/folders.html',
-                controller: 'folderController'
+                templateUrl: 'pages/photos.html',
+                controller: 'photoController'
             })
     }]);

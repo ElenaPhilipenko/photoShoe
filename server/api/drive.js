@@ -40,20 +40,29 @@ exports.setCode = function (code) {
     });
 };
 
-
 exports.getListOfFolders = function (callback) {
-    function foldersHandler(err, response, body) {
+    listFilesFromDrive("mimeType = 'application/vnd.google-apps.folder'", callback);
+};
+
+exports.getListOfImages = function (folderId, callback) {
+    listFilesFromDrive("'" + folderId + "' in parents", callback);
+};
+
+function listFilesFromDrive(query, callback) {
+    function driveFilesHandler(err, response, body) {
         if (err) return console.log('err', err);
-        console.log('body', JSON.parse(body).items);
         callback(JSON.parse(body).items);
     }
 
-    googleDrive(token.access_token).files().list({q: "mimeType = 'application/vnd.google-apps.folder'"}, foldersHandler);
-};
+    googleDrive(token.access_token)
+        .files()
+        .list({q: query}, driveFilesHandler);
+}
 
-//function fullGetList() {
+
+//function getFilesFromFolder(folderId, callback) {
 //    request.get({
-//        'url': ENDPOINT_OF_GDRIVE + '/files/',
+//        'url': ENDPOINT_OF_GDRIVE + '/files/' + folderId + '/children',
 //        'qs': {
 //            'access_token': token.access_token
 //        }
