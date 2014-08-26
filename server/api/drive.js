@@ -45,7 +45,7 @@ exports.getListOfFolders = function (callback) {
 };
 
 exports.getListOfImages = function (folderId, callback) {
-    listFilesFromDrive("'" + folderId + "' in parents", callback);
+    listFilesFromDrive("'" + folderId + "' in parents and mimeType contains 'image/'", callback);
 };
 
 function listFilesFromDrive(query, callback) {
@@ -56,7 +56,7 @@ function listFilesFromDrive(query, callback) {
 
     googleDrive(token.access_token)
         .files()
-        .list({q: query}, driveFilesHandler);
+        .list({q: query, maxResults: 1000}, driveFilesHandler);
 }
 
 

@@ -1,7 +1,9 @@
-<div>
+<div id="photo-container">
 
-    <div ng-repeat="photo in photos">
-        <a> {{photo.title}}</a>
+    <div ng-repeat="photo in photos | orderBy:'photoDate':false" class="photo-item">
+        <img src="{{photo.thumbnailLink}}" class="photo-img"/>
+
+        <div class="photo-info"><pre>{{photo.title}}</pre></div>
     </div>
 
 </div>
