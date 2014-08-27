@@ -1,9 +1,20 @@
-<div id="photo-container">
+<div class="photo-container">
+    <!--| orderBy:'photoDate':false-->
+    <div ng-repeat="photo in photos " class="photo-item">
+        <img ng-click="showPhoto(photo)" src="{{photo.thumbnailLink}}" class="photo-img"/>
 
-    <div ng-repeat="photo in photos | orderBy:'photoDate':false" class="photo-item">
-        <img src="{{photo.thumbnailLink}}" class="photo-img"/>
-
-        <div class="photo-info"><pre>{{photo.title}}</pre></div>
+        <div class="photo-info">
+            <pre>{{photo.title}}</pre>
+        </div>
     </div>
+    <div id="presentation" >
+        <div id="presentation-tools">
+            <button ng-click="showPrevious()"><-</button>
+            <button ng-click="showNext()">-></button>
+            <button ng-click="closePresentation()" id="close-button">X</button>
+        </div>
+        <iframe id="frame" ng-src="{{showPhotoUrl}}" frameborder="0"></iframe>
+    </div>
+
 
 </div>

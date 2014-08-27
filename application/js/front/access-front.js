@@ -13,17 +13,69 @@ angular.module('access-front', ['ngCookies', 'access-back'])
         }
     ])
 
-    .controller('photoController', ['$scope', '$routeParams', 'DriveFiles', 'AuthService',
-        function ($scope, $routeParams, DriveFiles, AuthService) {
+    .controller('photoController', ['$scope', '$sce', '$routeParams', 'DriveFiles', 'AuthService',
+        function ($scope, $sce, $routeParams, DriveFiles, AuthService) {
             AuthService.authIfNot(function () {
                 DriveFiles.getPhotos({folderId: $routeParams.folderId}, function (result) {
                     angular.forEach(result, function (value, key) {
                         parseAndSetDate(value);
                     });
+                    result.sort(function (d1, d2) {
+                        if (d1.photoDate > d2.photoDate) {
+                            return 1;
+                        } else {
+                            return d1.photoDate == d2.photoDate ? 0 : -1;
+                        }
+                    });
                     $scope.photos = result;
                 });
             });
+
+            $scope.showPhoto = function (photo) {
+                jQuery('#presentation').show();
+                $scope.photoKey = $scope.photos.indexOf(photo);
+                $scope.showPhotoUrl = $sce.trustAsResourceUrl(photo.alternateLink);
+            };
+
+            $scope.closePresentation = function () {
+                jQuery('#presentation').hide();
+            };
+
+            $scope.showNext = function () {
+                $scope.photoKey = $scope.photoKey + 1;
+                if ($scope.photoKey == $scope.photos.length) $scope.photoKey = 0;
+                $scope.showPhotoUrl = $sce.trustAsResourceUrl($scope.photos[$scope.photoKey].alternateLink);
+            };
+
+            $scope.showPrevious = function () {
+                $scope.photoKey = $scope.photoKey - 1;
+                if ($scope.photoKey < 0) $scope.photoKey = $scope.photos.length;
+                $scope.showPhotoUrl = $sce.trustAsResourceUrl($scope.photos[$scope.photoKey].alternateLink);
+            };
         }])
+
+    .factory('pollingService', ['$http', function ($http) {
+        var defaultPollingTime = 10000;
+        var polls = {};
+
+        return {
+            startPolling: function (name, url, pollingTime, callback) {
+                // Check to make sure poller doesn't already exist
+                if (!polls[name]) {
+                    var poller = function () {
+                        $http.get(url).then(callback);
+                    };
+                    poller();
+                    polls[name] = setInterval(poller, pollingTime || defaultPollingTime);
+                }
+            },
+
+            stopPolling: function (name) {
+                clearInterval(polls[name]);
+                delete polls[name];
+            }
+        }
+    }])
 
     .factory('AuthService', [ 'GoogleAccess', '$cookies', '$window', '$location',
         function (GoogleAccess, $cookies, $window, $location) {
@@ -74,4 +126,4 @@ function parseAndSetDate(value) {
     if (!value.photoDate || isNaN(value.photoDate)) {
         value.photoDate = Date.parse(value.modifiedDate);
     }
-}
+};
