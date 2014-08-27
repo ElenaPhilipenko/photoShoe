@@ -1,8 +1,8 @@
 angular.module('access-front', ['ngCookies', 'access-back'])
-    .controller('folderController', ['$scope', '$cookies', '$window', '$location', '$routeParams', 'GoogleAccess', 'DriveFiles', 'AuthService',
-        function ($scope, $cookies, $window, $location, $routeParams, GoogleAccess, DriveFiles, AuthService) {
+    .controller('folderController', ['$scope', '$window', '$location', 'DriveFiles', 'AuthService',
+        function ($scope, $window, $location, DriveFiles, AuthService) {
             $scope.permission = false;
-            AuthService.authIfNot(GoogleAccess, $cookies, $window, $location, function () {
+            AuthService.authIfNot(function () {
                 DriveFiles.getFolders(function (folders) {
                     $scope.folders = folders;
                 });
@@ -13,9 +13,9 @@ angular.module('access-front', ['ngCookies', 'access-back'])
         }
     ])
 
-    .controller('photoController', ['$scope', '$cookies', '$window', '$location', '$routeParams', 'DriveFiles', 'GoogleAccess', 'AuthService',
-        function ($scope, $cookies, $window, $location, $routeParams, DriveFiles, GoogleAccess, AuthService) {
-            AuthService.authIfNot(GoogleAccess, $cookies, $window, $location, function () {
+    .controller('photoController', ['$scope', '$routeParams', 'DriveFiles', 'AuthService',
+        function ($scope, $routeParams, DriveFiles, AuthService) {
+            AuthService.authIfNot(function () {
                 DriveFiles.getPhotos({folderId: $routeParams.folderId}, function (result) {
                     angular.forEach(result, function (value, key) {
                         parseAndSetDate(value);
@@ -25,27 +25,31 @@ angular.module('access-front', ['ngCookies', 'access-back'])
             });
         }])
 
-    .factory('AuthService', function () {
-        return {
-            authIfNot: function (GoogleAccess, $cookies, $window, $location, callback) {
-                GoogleAccess.isAuthorize(function (result) {
-                    if (!result.auth) {
-                        $cookies.beforeUrl = $location.url();
-                        GoogleAccess.getAccessUrl(function (data) {
-                            $window.location.href = data.url;
-                        });
-                    } else {
-                        if ($cookies.beforeUrl && $cookies.beforeUrl.length > 0) {
-                            $location.url($cookies.beforeUrl);
-                            $cookies.beforeUrl = "";
+    .factory('AuthService', [ 'GoogleAccess', '$cookies', '$window', '$location',
+        function (GoogleAccess, $cookies, $window, $location) {
+            return {
+                authIfNot: function (callback) {
+                    GoogleAccess.isAuthorize(function (result) {
+                        if (!result.auth) {
+                            $cookies.beforeUrl = $location.url();
+                            console.log($cookies.beforeUrl + " was ser");
+                            GoogleAccess.getAccessUrl(function (data) {
+                                if (data.url.length > 0) {
+                                    $window.location.href = data.url;
+                                }
+                            });
+                        } else {
+                            if ($cookies.beforeUrl && $cookies.beforeUrl.length > 0) {
+                                console.log($cookies.beforeUrl + " will be set");
+                                $location.url($cookies.beforeUrl);
+                                $cookies.beforeUrl = "";
+                            }
+                            callback();
                         }
-                        callback();
-                    }
-                });
+                    });
+                }
             }
-        }
-    });
-
+        }]);
 
 function parseDate(date) {
     var parts = date.split(" ");

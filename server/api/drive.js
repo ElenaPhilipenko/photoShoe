@@ -15,6 +15,7 @@ var token;
 
 
 exports.getAuthUrl = function () {
+    if (exports.isAuthorized()) return "";
     console.log("request for auth url");
     return auth.generateAuthUrl({
         access_type: 'offline', // will return a refresh token
@@ -26,7 +27,7 @@ exports.isAuthorized = function () {
     return (token && token.access_token);
 };
 
-exports.setCode = function (code) {
+exports.setCode = function (code, callback) {
     var params = {
         code: code,
         client_id: CLIENT_ID,
@@ -37,6 +38,7 @@ exports.setCode = function (code) {
 
     request.post('https://accounts.google.com/o/oauth2/token', {form: params}, function (err, resp, body) {
         token = JSON.parse(body);
+        callback();
     });
 };
 

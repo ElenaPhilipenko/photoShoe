@@ -12,8 +12,10 @@ exports.getAuthUrl = function (req, res) {
 
 exports.setCode = function (req, res) {
     var params = req.query;
-    drive.setCode(params.code);
-    res.sendFile(global.rootPath("./application/pages/index.html"));
+    drive.setCode(params.code, function () {
+        res.sendFile(global.rootPath("./application/pages/index.html"));
+    });
+
 };
 exports.findPhotos = function (req, res) {
     drive.getListOfImages(req.query.folderId, function (photos) {
