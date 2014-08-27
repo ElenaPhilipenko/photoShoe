@@ -1,32 +1,50 @@
-angular.module('access-front', ['access-back'])
-    .controller('folderController', ['$scope', '$window', '$location', '$routeParams', 'GoogleAccess', 'DriveFiles',
-        function ($scope, $window, $location, $routeParams, GoogleAccess, DriveFiles) {
+angular.module('access-front', ['ngCookies', 'access-back'])
+    .controller('folderController', ['$scope', '$cookies', '$window', '$location', '$routeParams', 'GoogleAccess', 'DriveFiles', 'AuthService',
+        function ($scope, $cookies, $window, $location, $routeParams, GoogleAccess, DriveFiles, AuthService) {
             $scope.permission = false;
-            GoogleAccess.isAuthorize(function (result) {
-                if (!result.auth) {
-                    GoogleAccess.getAccessUrl(function (data) {
-                        $window.location.href = data.url;
-                    });
-                } else {
-                    DriveFiles.getFolders(function (folders) {
-                        $scope.folders = folders;
-                    });
-                }
+            AuthService.authIfNot(GoogleAccess, $cookies, $window, $location, function () {
+                DriveFiles.getFolders(function (folders) {
+                    $scope.folders = folders;
+                });
             });
             $scope.openFolder = function (id) {
                 $window.location.href = "http://" + $location.host() + ":" + $location.port() + "#/folder/" + id;
             };
         }
     ])
-    .controller('photoController', ['$scope', '$routeParams', 'DriveFiles',
-        function ($scope, $routeParams, DriveFiles) {
-            DriveFiles.getPhotos({folderId: $routeParams.folderId}, function (result) {
-                angular.forEach(result, function (value, key) {
-                    parseAndSetDate(value);
+
+    .controller('photoController', ['$scope', '$cookies', '$window', '$location', '$routeParams', 'DriveFiles', 'GoogleAccess', 'AuthService',
+        function ($scope, $cookies, $window, $location, $routeParams, DriveFiles, GoogleAccess, AuthService) {
+            AuthService.authIfNot(GoogleAccess, $cookies, $window, $location, function () {
+                DriveFiles.getPhotos({folderId: $routeParams.folderId}, function (result) {
+                    angular.forEach(result, function (value, key) {
+                        parseAndSetDate(value);
+                    });
+                    $scope.photos = result;
                 });
-                $scope.photos = result;
             });
-        }]);
+        }])
+
+    .factory('AuthService', function () {
+        return {
+            authIfNot: function (GoogleAccess, $cookies, $window, $location, callback) {
+                GoogleAccess.isAuthorize(function (result) {
+                    if (!result.auth) {
+                        $cookies.beforeUrl = $location.url();
+                        GoogleAccess.getAccessUrl(function (data) {
+                            $window.location.href = data.url;
+                        });
+                    } else {
+                        if ($cookies.beforeUrl && $cookies.beforeUrl.length > 0) {
+                            $location.url($cookies.beforeUrl);
+                            $cookies.beforeUrl = "";
+                        }
+                        callback();
+                    }
+                });
+            }
+        }
+    });
 
 
 function parseDate(date) {
