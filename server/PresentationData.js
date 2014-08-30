@@ -1,10 +1,11 @@
 var MongoClient = require('mongodb').MongoClient
     , format = require('util').format;
+var config = require('conf');
 
 var usersCollection = 'presentation';
 
 function openConnection(callback) {
-    MongoClient.connect('mongodb://127.0.0.1:27017/photoShoe', function (err, db) {
+    MongoClient.connect(config.get('dbUrl'), function (err, db) {
         if (err) throw err;
         callback(db);
     });

@@ -3,6 +3,7 @@ var http = require('http');
 var express = require('express');
 var parser = require('body-parser');
 var path = require('path');
+var config = require('conf');
 
 
 function root(path) {
@@ -13,7 +14,7 @@ var drive = require(root('server/DriveService'));
 var presentation = require(root('server/ShowService'));
 
 var app = express();
-app.set('port', 2013);
+app.set('port', config.get('port'));
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));
 //app.use(parser.methodOverride());
