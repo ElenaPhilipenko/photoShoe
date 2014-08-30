@@ -34,9 +34,10 @@ app.get(api + '/list', drive.printList);
 app.get(api + '/photos', drive.findPhotos);
 app.get('/oauth2callback', drive.setCode);
 
+app.post(api + '/startPresentation', presentation.startPresentationh);
 app.get(api +'/getCurrentPhoto', presentation.getCurrentPhoto);
 app.post(api +'/setCurrentPhoto', presentation.setCurrentPhoto);
-app.post(api +'/startPresentation', presentation.startPresentationh);
+app.post(api + '/endPresentation', presentation.endPresentation);
 
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));

@@ -11,18 +11,7 @@ function openConnection(callback) {
     });
 }
 
-//
-//exports.userWaitForPresentation = function (userEmail, folderIdOfPresentation) {
-//    openConnection(function (db) {
-//        var users = db.collection(usersCollection);
-//        users.insert({email: userEmail, listenFolderId: folderIdOfPresentation}, function (err, res) {
-//            if (err) throw err;
-//            db.close();
-//        });
-//    });
-//};
-
-exports.startPresentation = function (presentationId, folderIdOfPresentation, callback) {
+exports.startPresentation = function (presentationId, callback) {
     openConnection(function (db) {
         var users = db.collection(usersCollection);
         users.insert({presentationId: presentationId}, function (err, res) {
@@ -31,16 +20,6 @@ exports.startPresentation = function (presentationId, folderIdOfPresentation, ca
             callback();
         });
 
-    });
-};
-
-exports.endPresentation = function (presentationId) {
-    openConnection(function (db) {
-        var presentations = db.collection(usersCollection);
-        presentations.remove({presentationId: presentationId}, function (err, result) {
-            if (err) throw err;
-            db.close();
-        });
     });
 };
 
@@ -62,7 +41,21 @@ exports.findCurrentPhoto = function (presentationId, callback) {
         var users = db.collection(usersCollection);
         users.findOne({presentationId: presentationId}, function (err, result) {
             if (err) throw err;
-            callback(result.photoUrl);
+            if (result) {
+                callback(result.photoUrl);
+            } else {
+                callback("")
+            }
+            db.close();
+        });
+    });
+};
+
+exports.endPresentation = function (presentationId) {
+    openConnection(function (db) {
+        var presentations = db.collection(usersCollection);
+        presentations.remove({presentationId: presentationId}, function (err, result) {
+            if (err) throw err;
             db.close();
         });
     });

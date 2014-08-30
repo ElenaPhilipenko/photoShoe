@@ -53,6 +53,7 @@ angular.module('presentator-front', ['ngCookies', 'access-back', 'presentation-b
 
             $scope.closePresentation = function () {
                 jQuery('#presentation').hide();
+                Presentation.endPresentation({presentationId: $scope.presentationId});
             };
 
             $scope.showNext = function () {
