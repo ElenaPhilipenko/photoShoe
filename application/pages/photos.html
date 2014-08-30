@@ -1,5 +1,6 @@
 <div class="photo-container">
     <!--| orderBy:'photoDate':false-->
+    <button ng-click="startPresentation()">START PRESENTATION</button>
     <div ng-repeat="photo in photos " class="photo-item">
         <img ng-click="showPhoto(photo)" src="{{photo.thumbnailLink}}" class="photo-img"/>
 
@@ -9,6 +10,7 @@
     </div>
     <div id="presentation" >
         <div id="presentation-tools">
+            {{presentationUri}}
             <button ng-click="showPrevious()"><-</button>
             <button ng-click="showNext()">-></button>
             <button ng-click="closePresentation()" id="close-button">X</button>

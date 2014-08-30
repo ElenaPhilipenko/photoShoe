@@ -1,5 +1,6 @@
 var shoeApp = angular.module("photo-shoe", [
-    "access-front",
+    "presentator-front",
+    "listener-front",
     'ngRoute']);
 
 shoeApp.config(['$routeProvider',
@@ -12,5 +13,9 @@ shoeApp.config(['$routeProvider',
             .when('/folder/:folderId', {
                 templateUrl: 'pages/photos.html',
                 controller: 'photoController'
+            })
+            .when('/presentation/:presentationId', {
+                templateUrl: 'pages/photosListener.html',
+                controller: 'listenerController'
             })
     }]);

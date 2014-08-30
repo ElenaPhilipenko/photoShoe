@@ -1,4 +1,4 @@
-angular.module('access-front', ['ngCookies', 'access-back'])
+angular.module('presentator-front', ['ngCookies', 'access-back', 'presentation-back'])
     .controller('folderController', ['$scope', '$window', '$location', 'DriveFiles', 'AuthService',
         function ($scope, $window, $location, DriveFiles, AuthService) {
             $scope.permission = false;
@@ -13,8 +13,9 @@ angular.module('access-front', ['ngCookies', 'access-back'])
         }
     ])
 
-    .controller('photoController', ['$scope', '$sce', '$routeParams', 'DriveFiles', 'AuthService',
-        function ($scope, $sce, $routeParams, DriveFiles, AuthService) {
+    .controller('photoController', ['$scope', '$window', '$location', '$sce', '$routeParams', 'DriveFiles', 'AuthService',
+        'Presentation',
+        function ($scope, $window, $location, $sce, $routeParams, DriveFiles, AuthService, Presentation) {
             AuthService.authIfNot(function () {
                 DriveFiles.getPhotos({folderId: $routeParams.folderId}, function (result) {
                     angular.forEach(result, function (value, key) {
@@ -31,6 +32,19 @@ angular.module('access-front', ['ngCookies', 'access-back'])
                 });
             });
 
+            $scope.startPresentation = function () {
+                $scope.presentationId = guid();
+                Presentation.startPresentation({folderId: $routeParams.folderId, presentationId: $scope.presentationId},
+                    function (result) {
+                        $scope.presentationUri = $location.protocol() + "://" + $location.host() + ":" + $location.port()
+                            + "#/presentation/" + $scope.presentationId;
+                        var photo = $scope.photos[0];
+                        Presentation.setCurrentPhoto({photo: photo.alternateLink, presentationId: $scope.presentationId});
+                        $scope.showPhoto(photo);
+                        console.log(result);
+                    });
+            };
+
             $scope.showPhoto = function (photo) {
                 jQuery('#presentation').show();
                 $scope.photoKey = $scope.photos.indexOf(photo);
@@ -45,37 +59,16 @@ angular.module('access-front', ['ngCookies', 'access-back'])
                 $scope.photoKey = $scope.photoKey + 1;
                 if ($scope.photoKey == $scope.photos.length) $scope.photoKey = 0;
                 $scope.showPhotoUrl = $sce.trustAsResourceUrl($scope.photos[$scope.photoKey].alternateLink);
+                Presentation.setCurrentPhoto({photo: $scope.photos[$scope.photoKey].alternateLink, presentationId: $scope.presentationId});
             };
 
             $scope.showPrevious = function () {
                 $scope.photoKey = $scope.photoKey - 1;
                 if ($scope.photoKey < 0) $scope.photoKey = $scope.photos.length;
                 $scope.showPhotoUrl = $sce.trustAsResourceUrl($scope.photos[$scope.photoKey].alternateLink);
+                Presentation.setCurrentPhoto({photo: $scope.photos[$scope.photoKey].alternateLink, presentationId: $scope.presentationId});
             };
         }])
-
-    .factory('pollingService', ['$http', function ($http) {
-        var defaultPollingTime = 10000;
-        var polls = {};
-
-        return {
-            startPolling: function (name, url, pollingTime, callback) {
-                // Check to make sure poller doesn't already exist
-                if (!polls[name]) {
-                    var poller = function () {
-                        $http.get(url).then(callback);
-                    };
-                    poller();
-                    polls[name] = setInterval(poller, pollingTime || defaultPollingTime);
-                }
-            },
-
-            stopPolling: function (name) {
-                clearInterval(polls[name]);
-                delete polls[name];
-            }
-        }
-    }])
 
     .factory('AuthService', [ 'GoogleAccess', '$cookies', '$window', '$location',
         function (GoogleAccess, $cookies, $window, $location) {
@@ -103,6 +96,13 @@ angular.module('access-front', ['ngCookies', 'access-back'])
             }
         }]);
 
+function guid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
 function parseDate(date) {
     var parts = date.split(" ");
     var day = parts[0].split(":");
@@ -126,4 +126,4 @@ function parseAndSetDate(value) {
     if (!value.photoDate || isNaN(value.photoDate)) {
         value.photoDate = Date.parse(value.modifiedDate);
     }
-};
+}

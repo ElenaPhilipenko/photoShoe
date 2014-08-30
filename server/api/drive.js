@@ -8,7 +8,7 @@ var CLIENT_ID = '498533563188-bfo6bd0oj7259t5rse1bca6p6quistv7.apps.googleuserco
     CLIENT_SECRET = 'BzkQR_BgKpDCBSMjF0cv7-3a',
     REDIRECT_URL = 'http://localhost:2013/oauth2callback',
     ENDPOINT_OF_GDRIVE = 'https://www.googleapis.com/drive/v2',
-    SCOPE = 'https://www.googleapis.com/auth/drive';
+    SCOPE = 'https://www.googleapis.com/auth/drive';// https://www.googleapis.com/auth/plus.login';
 
 var auth = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
 var token;
@@ -62,12 +62,16 @@ function listFilesFromDrive(query, callback) {
 }
 
 
-//function getFilesFromFolder(folderId, callback) {
+//function getProfileInfo(folderId, callback) {
 //    request.get({
-//        'url': ENDPOINT_OF_GDRIVE + '/files/' + folderId + '/children',
+//        'url': 'https://www.googleapis.com/plus/v1/people/me',
 //        'qs': {
 //            'access_token': token.access_token
 //        }
-//    }, callback);
+//    }, handleProfileInfo);
+//}
+//
+//function handleProfileInfo(err, result) {
+//    console.log(result);
 //}
 
