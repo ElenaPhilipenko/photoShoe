@@ -17,7 +17,7 @@
         <tr ng-repeat="folder in folders">
             <td>{{$index}}</td>
             <td ng-click="openFolder(folder.id)"><img class="folder-icon"
-                                                      src="{{folder.iconLink}}"><a>{{folder.title}}</a></td>
+                                                      src="{{folder.iconLink}}"><a href="">{{folder.title}}</a></td>
             <td>{{Date.parse(folder.createdDate) | date}}</td>
             <td>
                 <div ng-repeat="owner in folder.owners">

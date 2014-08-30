@@ -17,11 +17,11 @@
     <div id="presentation">
         <div id="presentation-tools">
             <span id="listener-uri">URI for listeners: </span>{{presentationUri}}
-            <button class="btn btn-inverse btn-mini" type="button" ng-click="showPrevious()"><-</button>
-            <button class="btn btn-inverse btn-mini" type="button" ng-click="showNext()">-></button>
-            <button id="close-presentation" id="close-button" ng-click="closePresentation()" type="button"
-                    class="close">
-                <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <button class="nav-button" type="button" ng-click="showPrevious()"><-</button>
+            <button class="nav-button" type="button" ng-click="showNext()">-></button>
+            <button id="close-presentation" ng-click="closePresentation()" type="button"
+                    class="close">X
+            </button>
         </div>
         <iframe id="frame" ng-src="{{showPhotoUrl}}" frameborder="0"></iframe>
     </div>
