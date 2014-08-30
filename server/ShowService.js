@@ -1,4 +1,4 @@
-var presentationData = require(global.rootPath('server/PresentationData'));
+var presentationData = require(global.rootPath('server/api/PresentationData'));
 
 exports.startPresentationh = function (req, res) {
     presentationData.startPresentation(req.body.presentationId,

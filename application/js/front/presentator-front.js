@@ -8,7 +8,7 @@ angular.module('presentator-front', ['ngCookies', 'access-back', 'presentation-b
                 });
             });
             $scope.openFolder = function (id) {
-                $window.location.href = "http://" + $location.host() + ":" + $location.port() + "#/folder/" + id;
+                $window.location.href = "http://" + $location.host() + ":" + $location.port() + "/myDrive#/folder/" + id;
             };
         }
     ])
@@ -17,6 +17,9 @@ angular.module('presentator-front', ['ngCookies', 'access-back', 'presentation-b
         'Presentation',
         function ($scope, $window, $location, $sce, $routeParams, DriveFiles, AuthService, Presentation) {
             AuthService.authIfNot(function () {
+                DriveFiles.getInfo({id: $routeParams.folderId}, function (info) {
+                    $scope.currentFolder = info.title;
+                });
                 DriveFiles.getPhotos({folderId: $routeParams.folderId}, function (result) {
                     angular.forEach(result, function (value, key) {
                         parseAndSetDate(value);
@@ -37,7 +40,7 @@ angular.module('presentator-front', ['ngCookies', 'access-back', 'presentation-b
                 Presentation.startPresentation({folderId: $routeParams.folderId, presentationId: $scope.presentationId},
                     function (result) {
                         $scope.presentationUri = $location.protocol() + "://" + $location.host() + ":" + $location.port()
-                            + "#/presentation/" + $scope.presentationId;
+                            + "/myDrive#/presentation/" + $scope.presentationId;
                         var photo = $scope.photos[0];
                         Presentation.setCurrentPhoto({photo: photo.alternateLink, presentationId: $scope.presentationId});
                         $scope.showPhoto(photo);

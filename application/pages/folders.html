@@ -1,7 +1,35 @@
-<div>
+<div class="row" id="folders">
+    <div class="jumbotron">
+        <h4>My Google Drive Folders</h4>
 
-    <div ng-repeat="folder in folders">
-        <a ng-click="openFolder(folder.id)"> {{folder.title}}</a>
+        <p>Open folder with images to start presentation.</p>
     </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Folder Name</th>
+            <th>Date</th>
+            <th>Owner</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="folder in folders">
+            <td>{{$index}}</td>
+            <td ng-click="openFolder(folder.id)"><img class="folder-icon"
+                                                      src="{{folder.iconLink}}"><a>{{folder.title}}</a></td>
+            <td>{{Date.parse(folder.createdDate) | date}}</td>
+            <td>
+                <div ng-repeat="owner in folder.owners">
+                    <img class="img-circle owner-icon" src="{{owner.picture.url}}"/> {{owner.displayName}}
+                </div>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
 
 </div>
+
+

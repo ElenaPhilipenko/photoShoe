@@ -1,9 +1,33 @@
-#video {
-    -webkit-filter: sepia(1);
+.jumbotron {
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+}
+
+#folders {
+    margin: 40px 5px 40px 10px;
+}
+
+#folders .folder-icon {
+    padding-right: 5px;
+}
+
+.owner-icon {
+    height: 35px;
+}
+
+#folders a {
+    color: #000000;
+}
+
+#folders a:hover {
+    color: #000000;
+    background: transparent;
+    text-decoration: underline;
 }
 
 .photo-container {
     display: block;
+    margin: 20px;
 }
 
 .photo-container .photo-item {
@@ -21,7 +45,46 @@
     max-height: 125px;
 }
 
-pre {
+.photo-container #presentation {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 5%;
+    width: 90%;
+    height: 98%;
+    padding: 3px;
+    z-index: 1002;
+    overflow: auto;
+}
+
+.photo-container #presentation #presentation-tools {
+    background-color: #1e1e1e;
+    opacity: .93;
+    width: 100%;
+    height: 34px;
+    color: whitesmoke;
+}
+
+.photo-container #presentation #close-presentation {
+    padding-right: 5px;
+}
+.photo-container #presentation #frame {
+    width: 100%;
+    height: 95%;
+}
+
+/*////*/
+.photo-container-listener #presentation #frame {
+    width: 100%;
+    height: 100%;
+}
+
+.photo-container-listener {
+    width: 100%;
+    height: 100%;
+}
+
+.word-break {
     white-space: pre; /* CSS 2.0 */
     white-space: pre-wrap; /* CSS 2.1 */
     white-space: pre-line; /* CSS 3.0 */
@@ -30,42 +93,4 @@ pre {
     white-space: -moz-pre-wrap; /* Mozilla */
     white-space: -hp-pre-wrap; /* HP Printers */
     word-wrap: break-word; /* IE 5+ */
-}
-
-.photo-container #presentation {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 5%;
-    width: 85%;
-    height: 98%;
-    padding: 3px;
-    border: 3px solid rgba(3, 141, 172, 0.15);
-    background-color: white;
-    z-index: 1002;
-    overflow: auto;
-}
-
-.photo-container #presentation-tools {
-    width: 100%;
-    height: 20px;
-}
-
-.photo-container #presentation-tools #close-button {
-    /*align-self: ;*/
-}
-
-.photo-container #frame {
-    width: 100%;
-    height: 96%;
-}
-
-.photo-container-listener #frame {
-    width: 100%;
-    height: 100%;
-}
-
-.photo-container-listener {
-    width: 100%;
-    height: 100%;
 }

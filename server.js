@@ -24,6 +24,9 @@ app.use(express.static(path.join(__dirname, 'application')));
 app.get('/', function (req, res) {
     res.sendFile(root("./application/pages/index.html"));
 });
+app.get('/myDrive', function (req, res) {
+    res.sendFile(root("./application/pages/application.html"));
+});
 
 var api = "/api";
 
@@ -31,12 +34,13 @@ app.get(api + '/url', drive.getAuthUrl);
 app.get(api + '/auth', drive.getAuth);
 
 app.get(api + '/list', drive.printList);
+app.get(api + '/info', drive.getInfo);
 app.get(api + '/photos', drive.findPhotos);
 app.get('/oauth2callback', drive.setCode);
 
 app.post(api + '/startPresentation', presentation.startPresentationh);
-app.get(api +'/getCurrentPhoto', presentation.getCurrentPhoto);
-app.post(api +'/setCurrentPhoto', presentation.setCurrentPhoto);
+app.get(api + '/getCurrentPhoto', presentation.getCurrentPhoto);
+app.post(api + '/setCurrentPhoto', presentation.setCurrentPhoto);
 app.post(api + '/endPresentation', presentation.endPresentation);
 
 http.createServer(app).listen(app.get('port'), function () {

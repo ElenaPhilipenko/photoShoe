@@ -50,6 +50,15 @@ exports.getListOfImages = function (folderId, callback) {
     listFilesFromDrive("'" + folderId + "' in parents and mimeType contains 'image/'", callback);
 };
 
+exports.getMetadata = function (id, callback) {
+    googleDrive(token.access_token).files(id).get({}, function (err, res, body) {
+        if (err) throw err;
+        callback(JSON.parse(body));
+//        console.log(JSON.parse(body));
+    });
+};
+
+
 function listFilesFromDrive(query, callback) {
     function driveFilesHandler(err, response, body) {
         if (err) return console.log('err', err);

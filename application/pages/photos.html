@@ -1,19 +1,27 @@
 <div class="photo-container">
-    <!--| orderBy:'photoDate':false-->
-    <button ng-click="startPresentation()">START PRESENTATION</button>
+    <div class="jumbotron">
+        <h3>{{currentFolder}}</h3>
+
+        <p>To start presentation hit Start Presentation button and provide link to the presentation to your friends.
+            When you will change current image, your friends image will be changed automatically.</p>
+        <button type="button" ng-click="startPresentation()" class="btn btn-primary btn-lg">START PRESENTATION</button>
+    </div>
+
     <div ng-repeat="photo in photos " class="photo-item">
         <img ng-click="showPhoto(photo)" src="{{photo.thumbnailLink}}" class="photo-img"/>
 
         <div class="photo-info">
-            <pre>{{photo.title}}</pre>
+            <span class="word-break">{{photo.title}}</span>
         </div>
     </div>
-    <div id="presentation" >
+    <div id="presentation">
         <div id="presentation-tools">
-            {{presentationUri}}
-            <button ng-click="showPrevious()"><-</button>
-            <button ng-click="showNext()">-></button>
-            <button ng-click="closePresentation()" id="close-button">X</button>
+            <span id="listener-uri">URI for listeners: </span>{{presentationUri}}
+            <button class="btn btn-inverse btn-mini" type="button" ng-click="showPrevious()"><-</button>
+            <button class="btn btn-inverse btn-mini" type="button" ng-click="showNext()">-></button>
+            <button id="close-presentation" id="close-button" ng-click="closePresentation()" type="button"
+                    class="close">
+                <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         </div>
         <iframe id="frame" ng-src="{{showPhotoUrl}}" frameborder="0"></iframe>
     </div>

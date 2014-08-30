@@ -1,8 +1,14 @@
-var drive = require(global.rootPath('server/api/drive'));
+var drive = require(global.rootPath('server/api/GoogleDriveAccess'));
 
 exports.printList = function (req, res) {
     drive.getListOfFolders(function (folders) {
         res.json(folders);
+    });
+};
+
+exports.getInfo = function (req, res) {
+    drive.getMetadata(req.query.id, function (info) {
+        res.json(info);
     });
 };
 
@@ -13,7 +19,7 @@ exports.getAuthUrl = function (req, res) {
 exports.setCode = function (req, res) {
     var params = req.query;
     drive.setCode(params.code, function () {
-        res.sendFile(global.rootPath("./application/pages/index.html"));
+        res.sendFile(global.rootPath("./application/pages/application.html"));
     });
 
 };
