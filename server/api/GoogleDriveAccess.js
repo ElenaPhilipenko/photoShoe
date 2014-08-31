@@ -28,6 +28,7 @@ exports.isAuthorized = function () {
 };
 
 exports.setCode = function (code, callback) {
+    console.log(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
     var params = {
         code: code,
         client_id: CLIENT_ID,
