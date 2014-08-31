@@ -13,6 +13,7 @@ var drive = require(root('server/DriveService'));
 var presentation = require(root('server/ShowService'));
 
 var app = express();
+console.log("port:  " + process.env.OPENSHIFT_NODEJS_PORT);
 app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 2013);
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));
@@ -42,7 +43,8 @@ app.get(api + '/getCurrentPhoto', presentation.getCurrentPhoto);
 app.post(api + '/setCurrentPhoto', presentation.setCurrentPhoto);
 app.post(api + '/endPresentation', presentation.endPresentation);
 
-http.createServer(app).listen(app.get('port'), function () {
+console.log("ip:" + process.env.OPENSHIFT_NODEJS_IP);
+http.createServer(app).listen(app.get('port'), process.env.OPENSHIFT_NODEJS_IP, function () {
     console.log('Express server listening on port ' + app.get('port'));
 });
 
