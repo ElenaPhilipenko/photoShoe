@@ -1,7 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
 
 var usersCollection = 'presentation';
-var db_auth = (process.env.DB_LOGIN && process.env.DB_PASS) ? +process.env.DB_LOGIN + ":" + process.env.DB_PASS + "@" : "";
+var db_auth = (process.env.DB_LOGIN && process.env.DB_PASS) ? process.env.DB_LOGIN + ":" + process.env.DB_PASS + "@" : "";
 
 function openConnection(callback) {
     MongoClient.connect('mongodb://' + db_auth
