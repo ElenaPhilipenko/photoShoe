@@ -4,10 +4,9 @@ var googleDrive = require('google-drive');
 var request = require('request');
 var OAuth2 = googleapis.auth.OAuth2;
 
-var CLIENT_ID = '498533563188-bfo6bd0oj7259t5rse1bca6p6quistv7.apps.googleusercontent.com',
-    CLIENT_SECRET = 'BzkQR_BgKpDCBSMjF0cv7-3a',
-    REDIRECT_URL = 'http://localhost:2013/oauth2callback',
-    ENDPOINT_OF_GDRIVE = 'https://www.googleapis.com/drive/v2',
+var CLIENT_ID = process.env.CLIENT_ID,
+    CLIENT_SECRET = process.env.CLIENT_SECRET,
+    REDIRECT_URL = process.env.REDIRECT_URI,
     SCOPE = 'https://www.googleapis.com/auth/drive';// https://www.googleapis.com/auth/plus.login';
 
 var auth = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);

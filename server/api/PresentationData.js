@@ -1,10 +1,10 @@
 var MongoClient = require('mongodb').MongoClient;
-var config = require('conf');
 
 var usersCollection = 'presentation';
 
 function openConnection(callback) {
-    MongoClient.connect(config.get('dbUrl'), function (err, db) {
+    MongoClient.connect('mongodb://' + process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
+        process.env.OPENSHIFT_MONGODB_DB_PORT + '/photoshoe', function (err, db) {
         if (err) throw err;
         callback(db);
     });
