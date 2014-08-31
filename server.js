@@ -3,7 +3,6 @@ var http = require('http');
 var express = require('express');
 var parser = require('body-parser');
 var path = require('path');
-var config = require('conf');
 
 
 function root(path) {
