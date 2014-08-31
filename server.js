@@ -14,7 +14,7 @@ var drive = require(root('server/DriveService'));
 var presentation = require(root('server/ShowService'));
 
 var app = express();
-app.set('port', config.get('port'));
+app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 2013);
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));
 //app.use(parser.methodOverride());
