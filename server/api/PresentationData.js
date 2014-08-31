@@ -1,13 +1,18 @@
 var MongoClient = require('mongodb').MongoClient;
 
 var usersCollection = 'presentation';
+var db_auth = (process.env.DB_LOGIN && process.env.DB_PASS) ? +process.env.DB_LOGIN + ":" + process.env.DB_PASS + "@" : "";
 
 function openConnection(callback) {
-    MongoClient.connect('mongodb://' + process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
-        process.env.OPENSHIFT_MONGODB_DB_PORT + '/photoshoe', function (err, db) {
-        if (err) throw err;
-        callback(db);
-    });
+    MongoClient.connect('mongodb://' + db_auth
+            + process.env.OPENSHIFT_MONGODB_DB_HOST
+            + ':'
+            + process.env.OPENSHIFT_MONGODB_DB_PORT
+            + '/photoshoe',
+        function (err, db) {
+            if (err) throw err;
+            callback(db);
+        });
 }
 
 exports.startPresentation = function (presentationId, callback) {

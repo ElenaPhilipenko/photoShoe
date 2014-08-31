@@ -8,7 +8,7 @@ var CLIENT_ID = process.env.CLIENT_ID,
     CLIENT_SECRET = process.env.CLIENT_SECRET,
     REDIRECT_URL = process.env.REDIRECT_URI,
     SCOPE = 'https://www.googleapis.com/auth/drive';// https://www.googleapis.com/auth/plus.login';
-console.log(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
+//console.log(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
 
 var auth = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
 var token;
@@ -29,7 +29,6 @@ exports.isAuthorized = function () {
 
 exports.setCode = function (code, callback) {
     console.log("get Code: " + code);
-    console.log(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
     var params = {
         code: code,
         client_id: CLIENT_ID,
