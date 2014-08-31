@@ -78,24 +78,22 @@ angular.module('presentator-front', ['ngCookies', 'access-back', 'presentation-b
         function (GoogleAccess, $cookies, $window, $location) {
             return {
                 authIfNot: function (callback) {
-                    GoogleAccess.isAuthorize(function (result) {
-                        if (!result.auth) {
-                            $cookies.beforeUrl = $location.url();
-                            console.log($cookies.beforeUrl + " was ser");
-                            GoogleAccess.getAccessUrl(function (data) {
-                                if (data.url.length > 0) {
-                                    $window.location.href = data.url;
-                                }
-                            });
-                        } else {
-                            if ($cookies.beforeUrl && $cookies.beforeUrl.length > 0) {
-                                console.log($cookies.beforeUrl + " will be set");
-                                $location.url($cookies.beforeUrl);
-                                $cookies.beforeUrl = "";
+                    if (!$cookies.token || $cookies.token.length == 0) {
+                        $cookies.beforeUrl = $location.url();
+                        console.log($cookies.beforeUrl + " was ser");
+                        GoogleAccess.getAccessUrl(function (data) {
+                            if (data.url.length > 0) {
+                                $window.location.href = data.url;
                             }
-                            callback();
+                        });
+                    } else {
+                        if ($cookies.beforeUrl && $cookies.beforeUrl.length > 0) {
+                            console.log($cookies.beforeUrl + " will be set");
+                            $location.url($cookies.beforeUrl);
+                            $cookies.beforeUrl = "";
                         }
-                    });
+                        callback();
+                    }
                 }
             }
         }]);
