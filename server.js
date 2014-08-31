@@ -44,7 +44,7 @@ app.post(api + '/setCurrentPhoto', presentation.setCurrentPhoto);
 app.post(api + '/endPresentation', presentation.endPresentation);
 
 console.log("ip:" + process.env.OPENSHIFT_NODEJS_IP);
-http.createServer(app).listen(app.get('port'), process.env.OPENSHIFT_NODEJS_IP, function () {
+http.createServer(app).listen(app.get('port'), process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1', function () {
     console.log('Express server listening on port ' + app.get('port'));
 });
 

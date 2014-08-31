@@ -8,6 +8,7 @@ var CLIENT_ID = process.env.CLIENT_ID,
     CLIENT_SECRET = process.env.CLIENT_SECRET,
     REDIRECT_URL = process.env.REDIRECT_URI,
     SCOPE = 'https://www.googleapis.com/auth/drive';// https://www.googleapis.com/auth/plus.login';
+console.log(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
 
 var auth = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
 var token;
@@ -70,16 +71,4 @@ function listFilesFromDrive(query, callback) {
 }
 
 
-//function getProfileInfo(folderId, callback) {
-//    request.get({
-//        'url': 'https://www.googleapis.com/plus/v1/people/me',
-//        'qs': {
-//            'access_token': token.access_token
-//        }
-//    }, handleProfileInfo);
-//}
-//
-//function handleProfileInfo(err, result) {
-//    console.log(result);
-//}
 
