@@ -78,7 +78,7 @@ angular.module('presentator-front', ['ngCookies', 'access-back', 'presentation-b
         function (GoogleAccess, $cookies, $window, $location) {
             return {
                 authIfNot: function (callback) {
-                    if (!$cookies.token || $cookies.token.length == 0) {
+                    if (!$cookies.code || $cookies.code.length == 0) {
                         $cookies.beforeUrl = $location.url();
                         console.log($cookies.beforeUrl + " was ser");
                         GoogleAccess.getAccessUrl(function (data) {
