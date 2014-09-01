@@ -42,7 +42,7 @@ angular.module('presentator-front', ['ngCookies', 'access-back', 'presentation-b
                         $scope.presentationUri = $location.protocol() + "://" + $location.host() + ":" + $location.port()
                             + "/myDrive#/presentation/" + $scope.presentationId;
                         var photo = $scope.photos[0];
-                        Presentation.setCurrentPhoto({photo: photo.alternateLink, presentationId: $scope.presentationId});
+                        Presentation.setCurrentPhoto({photo: photo.webContentLink, presentationId: $scope.presentationId});
                         $scope.showPhoto(photo);
                         console.log(result);
                     });
@@ -51,7 +51,7 @@ angular.module('presentator-front', ['ngCookies', 'access-back', 'presentation-b
             $scope.showPhoto = function (photo) {
                 jQuery('#presentation').show();
                 $scope.photoKey = $scope.photos.indexOf(photo);
-                $scope.showPhotoUrl = $sce.trustAsResourceUrl(photo.alternateLink);
+                $scope.showPhotoUrl = $sce.trustAsResourceUrl(photo.webContentLink);
             };
 
             $scope.closePresentation = function () {
@@ -62,15 +62,15 @@ angular.module('presentator-front', ['ngCookies', 'access-back', 'presentation-b
             $scope.showNext = function () {
                 $scope.photoKey = $scope.photoKey + 1;
                 if ($scope.photoKey == $scope.photos.length) $scope.photoKey = 0;
-                $scope.showPhotoUrl = $sce.trustAsResourceUrl($scope.photos[$scope.photoKey].alternateLink);
-                Presentation.setCurrentPhoto({photo: $scope.photos[$scope.photoKey].alternateLink, presentationId: $scope.presentationId});
+                $scope.showPhotoUrl = $sce.trustAsResourceUrl($scope.photos[$scope.photoKey].webContentLink);
+                Presentation.setCurrentPhoto({photo: $scope.photos[$scope.photoKey].webContentLink, presentationId: $scope.presentationId});
             };
 
             $scope.showPrevious = function () {
                 $scope.photoKey = $scope.photoKey - 1;
                 if ($scope.photoKey < 0) $scope.photoKey = $scope.photos.length;
-                $scope.showPhotoUrl = $sce.trustAsResourceUrl($scope.photos[$scope.photoKey].alternateLink);
-                Presentation.setCurrentPhoto({photo: $scope.photos[$scope.photoKey].alternateLink, presentationId: $scope.presentationId});
+                $scope.showPhotoUrl = $sce.trustAsResourceUrl($scope.photos[$scope.photoKey].webContentLink);
+                Presentation.setCurrentPhoto({photo: $scope.photos[$scope.photoKey].webContentLink, presentationId: $scope.presentationId});
             };
         }])
 

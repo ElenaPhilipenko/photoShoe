@@ -1,5 +1,6 @@
-<div class="photo-container-listener">
-
-    <iframe id="frame" ng-src="{{showPhotoUrl}}" frameborder="0"></iframe>
-
+<div class="photo-container">
+    <div id="presentation" style="display:block!important">
+        <img id="frame" class="fullSize" ng-click="showPhoto(photo)" src="{{showPhotoUrl}}"/>
+        <!--<iframe id="frame" ng-src="{{showPhotoUrl}}" frameborder="0"></iframe>-->
+    </div>
 </div>
